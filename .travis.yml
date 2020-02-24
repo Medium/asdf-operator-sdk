@@ -1,0 +1,9 @@
+language: c
+os:
+  - linux
+  - osx
+before_script:
+  - git clone https://github.com/asdf-vm/asdf.git
+  - . asdf/asdf.sh
+script:
+  - asdf plugin-add operator-sdk https://github.com/Medium/asdf-operator-sdk.git

@@ -1,5 +1,7 @@
 # asdf-operator-sdk
 
+[![Build Status](https://travis-ci.org/Medium/asdf-operator-sdk.svg?branch=master)](https://travis-ci.org/Medium/asdf-operator-sdk)
+
 [Operator SDK](https://github.com/operator-framework/operator-sdk) plugin for [asdf](https://github.com/asdf-vm/asdf) version manager
 
 ## Install
