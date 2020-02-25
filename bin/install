@@ -1,59 +1,64 @@
 #!/usr/bin/env bash
 
-set -e
-set -o pipefail
+set -eo pipefail
 
 install_operator_sdk() {
-  local install_type=$1
-  local version=$2
-  local install_path=$3
+  install_type=$1
+  version=$2
+  install_path=$3
 
-  local os="$(uname | tr '[:upper:]' '[:lower:]')"
-  if [ "$os" = "darwin" ]; then
-    local os="apple-$os"
-  elif [ "$os" = "linux" ]; then
-    local os="$os-gnu"
+  if [ "$install_type" != "version" ]; then
+    echo "asdf-operator-sdk supports release installs only"
+    exit 1
   fi
-  local platform="$(uname -m)-$os"
 
-  local bin_install_path="$install_path/bin"
-  local binary_path="$bin_install_path/operator-sdk"
-  local download_url=$(get_download_url $version $platform)
+  os="$(uname | tr '[:upper:]' '[:lower:]')"
+
+  if [ "$os" = "darwin" ]; then
+    os="apple-$os"
+  elif [ "$os" = "linux" ]; then
+    os="$os-gnu"
+  fi
+
+  platform="$(uname -m)-$os"
+  bin_install_path="$install_path/bin"
+  binary_path="$bin_install_path/operator-sdk"
+  download_url="$(get_download_url "$version" "$platform")"
 
   if [ "$TMPDIR" = "" ]; then
-    local tmp_download_dir=$(mktemp -d -t operator-sdk_XXXXXX)
+    tmp_download_dir="$(mktemp -d -t operator-sdk_XXXXXX)"
   else
-    local tmp_download_dir=$TMPDIR
+    tmp_download_dir=$TMPDIR
   fi
 
-  local download_path="$tmp_download_dir/$(get_filename $version $platform)"
+  download_path="$tmp_download_dir/$(get_filename "$version" "$platform")"
 
-  echo "Downloading operator-sdk from ${download_url} to ${download_path}"
-  curl -Lo $download_path $download_url
+  echo "Downloading operator-sdk from $download_url to $download_path"
+  curl -Lo "$download_path" "$download_url"
 
   echo "Creating bin directory"
-  mkdir -p "${bin_install_path}"
+  mkdir -p "$bin_install_path"
 
   echo "Cleaning previous binaries"
-  rm -f $binary_path 2>/dev/null || true
+  rm -f "$binary_path" 2>/dev/null || true
 
   echo "Copying binary"
-  cp ${download_path} ${binary_path}
-  chmod +x ${binary_path}
+  cp "$download_path" "$binary_path"
+  chmod +x "$binary_path"
 }
 
 get_filename() {
-  local version="$1"
-  local platform="$2"
+  version="$1"
+  platform="$2"
 
-  echo "operator-sdk-v${version}-${platform}"
+  echo "operator-sdk-v$version-$platform"
 }
 
 get_download_url() {
-  local version="$1"
-  local platform="$2"
-  local filename="$(get_filename $version $platform)"
-  echo "https://github.com/operator-framework/operator-sdk/releases/download/v${version}/${filename}"
+  version="$1"
+  platform="$2"
+  filename="$(get_filename "$version" "$platform")"
+  echo "https://github.com/operator-framework/operator-sdk/releases/download/v$version/$filename"
 }
 
-install_operator_sdk $ASDF_INSTALL_TYPE $ASDF_INSTALL_VERSION $ASDF_INSTALL_PATH
+install_operator_sdk "$ASDF_INSTALL_TYPE" "$ASDF_INSTALL_VERSION" "$ASDF_INSTALL_PATH"
