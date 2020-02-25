@@ -33,3 +33,16 @@ jobs:
 
       - name: Run ShellCheck
         run: shellcheck bin/*
+
+  format:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install shfmt
+        run: brew install shfmt
+
+      - name: Run shfmt
+        run: shfmt -d -i 2 -ci .
