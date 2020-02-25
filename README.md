@@ -1,6 +1,6 @@
 # asdf-operator-sdk
 
-[![Build Status](https://travis-ci.org/Medium/asdf-operator-sdk.svg?branch=master)](https://travis-ci.org/Medium/asdf-operator-sdk)
+[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/Medium/asdf-operator-sdk/Main%20workflow?style=flat-square)](https://github.com/Medium/asdf-operator-sdk/actions)
 
 [Operator SDK](https://github.com/operator-framework/operator-sdk) plugin for [asdf](https://github.com/asdf-vm/asdf) version manager
 
