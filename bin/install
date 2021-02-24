@@ -46,7 +46,16 @@ get_filename() {
   local version="$1"
   local platform="$2"
 
-  echo "operator-sdk-v${version}-${platform}"
+  if [ -z "$(echo $version | egrep '[01]\.[012]\.[0-9]+')" ]; then
+    local os="$(uname | tr '[:upper:]' '[:lower:]')"
+    local arch=$(uname -m)
+    if [ "$arch" == "x86_64" ]; then
+      arch="amd64"
+    fi
+    echo "operator-sdk_${os}_${arch}"
+  else
+    echo "operator-sdk-v${version}-${platform}"
+  fi
 }
 
 get_download_url() {
