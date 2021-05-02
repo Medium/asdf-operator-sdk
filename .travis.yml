@@ -6,4 +6,5 @@ before_script:
   - git clone https://github.com/asdf-vm/asdf.git
   - . asdf/asdf.sh
 script:
-  - asdf plugin test operator-sdk $TRAVIS_BUILD_DIR 'operator-sdk version'
+  - asdf plugin test operator-sdk $TRAVIS_BUILD_DIR --asdf-tool-version 1.2.0 --asdf-plugin-gitref $TRAVIS_COMMIT 'operator-sdk version'
+  - asdf plugin test operator-sdk $TRAVIS_BUILD_DIR --asdf-plugin-gitref $TRAVIS_COMMIT 'operator-sdk version'
